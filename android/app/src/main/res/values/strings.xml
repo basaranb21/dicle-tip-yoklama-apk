@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tip Yoklama</string>
+    <string name="title_activity_main">Tip Yoklama</string>
+    <string name="package_name">tr.edu.dicle.tip.yoklama</string>
+    <string name="custom_url_scheme">tr.edu.dicle.tip.yoklama</string>
+</resources>

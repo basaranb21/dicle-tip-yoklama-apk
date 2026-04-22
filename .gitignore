@@ -1,0 +1,32 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Capacitor
+www/dist/
+.capacitor/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/captures/
+*.apk
+*.aab
+
+# Sign key (GIZLI, asla commit etme)
+*.jks
+*.keystore
+keystore.properties
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

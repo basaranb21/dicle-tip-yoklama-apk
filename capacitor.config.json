@@ -1,0 +1,41 @@
+{
+  "appId": "tr.edu.dicle.tip.yoklama",
+  "appName": "Tip Yoklama",
+  "webDir": "www",
+  "server": {
+    "url": "https://ders.otomasyon.dicle.edu.tr",
+    "cleartext": false,
+    "androidScheme": "https",
+    "allowNavigation": [
+      "ders.otomasyon.dicle.edu.tr",
+      "*.dicle.edu.tr"
+    ]
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#0d2b6b"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0d2b6b",
+      "showSpinner": true,
+      "spinnerColor": "#c8941e",
+      "androidSplashResourceName": "splash"
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0d2b6b"
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "Geolocation": {
+      "permissions": {
+        "location": "always"
+      }
+    }
+  }
+}

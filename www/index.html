@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0d2b6b">
+  <title>Dicle Tip Yoklama</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:linear-gradient(135deg,#0d2b6b 0%,#1e3a8a 100%);
+      min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;padding:20px;
+    }
+    .splash{text-align:center;max-width:400px;width:100%}
+    .logo{
+      width:100px;height:100px;margin:0 auto 20px;
+      background:rgba(255,255,255,.15);
+      border-radius:24px;display:flex;align-items:center;justify-content:center;
+      font-size:52px;backdrop-filter:blur(10px);
+      border:2px solid rgba(255,255,255,.2);
+    }
+    h1{font-size:22px;margin-bottom:6px;font-weight:800}
+    h2{font-size:14px;font-weight:500;opacity:.85;margin-bottom:30px}
+    .spinner{
+      width:40px;height:40px;margin:20px auto;
+      border:3px solid rgba(255,255,255,.2);
+      border-top-color:#c8941e;border-radius:50%;
+      animation:spin 1s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .status{font-size:13px;opacity:.8;margin-top:10px}
+    .offline{
+      display:none;
+      background:rgba(255,255,255,.1);
+      padding:20px;border-radius:12px;margin-top:20px;
+    }
+    .offline.show{display:block}
+    .offline p{font-size:13px;margin:6px 0}
+    .btn{
+      display:inline-block;margin-top:15px;padding:12px 30px;
+      background:#c8941e;color:#fff;border:none;border-radius:8px;
+      font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;
+    }
+    .version{position:absolute;bottom:20px;font-size:11px;opacity:.5}
+  </style>
+</head>
+<body>
+
+<div class="splash">
+  <div class="logo">🏛️</div>
+  <h1>Dicle Tip Yoklama</h1>
+  <h2>Dicle Universitesi Tip Fakultesi</h2>
+  <div class="spinner"></div>
+  <div class="status" id="status">Baglaniliyor...</div>
+
+  <div class="offline" id="offlineMsg">
+    <p>⚠️ <strong>Internet baglantisi yok</strong></p>
+    <p>Yoklama icin internet gereklidir. Lutfen Wi-Fi veya mobil veriyi acin.</p>
+    <button class="btn" onclick="retry()">Tekrar Dene</button>
+  </div>
+</div>
+
+<div class="version">v1.0.0</div>
+
+<script>
+  var SERVER_URL = 'https://ders.otomasyon.dicle.edu.tr';
+
+  function retry() {
+    document.getElementById('offlineMsg').classList.remove('show');
+    document.getElementById('status').textContent = 'Baglaniliyor...';
+    checkConnection();
+  }
+
+  function checkConnection() {
+    // Server erisilebilir mi?
+    fetch(SERVER_URL + '/accounts/login/', {method:'HEAD', mode:'no-cors'})
+      .then(function(){
+        window.location.href = SERVER_URL;
+      })
+      .catch(function(){
+        document.getElementById('status').textContent = 'Sunucuya ulasilamadi';
+        document.getElementById('offlineMsg').classList.add('show');
+      });
+  }
+
+  // Capacitor native degil, tarayicidan acilmissa yine de calisir
+  if (typeof window.Capacitor !== 'undefined') {
+    // Capacitor ortami — direkt yönlendir
+    setTimeout(function(){
+      window.location.href = SERVER_URL;
+    }, 800);
+  } else {
+    // Normal tarayici
+    setTimeout(checkConnection, 500);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Sadece Dicle domain'leri — guvenlik icin -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">dicle.edu.tr</domain>
+        <!-- SSL Pinning (production icin etkinlestir) -->
+        <!-- <pin-set expiration="2027-01-01">
+            <pin digest="SHA-256">YOUR_CERT_PIN_HERE</pin>
+        </pin-set> -->
+    </domain-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
