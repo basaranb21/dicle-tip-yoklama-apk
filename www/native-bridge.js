@@ -50,17 +50,45 @@
       });
     },
 
-    // ── Biyometrik dogrulama ────────────────────────────────────
+    // ── Biyometrik dogrulama (parmak izi / yuz / device credential fallback) ──
+    // Telefonda biyometrik varsa kullan, yoksa telefon PIN/deseni, o da yoksa false doner
+    // false donerse WebView'da uygulama PIN'i sorulur
+    checkBiometricAvailable: function() {
+      return new Promise(function(resolve) {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.BiometricAuth) {
+          window.Capacitor.Plugins.BiometricAuth.checkBiometry()
+            .then(function(r) {
+              resolve({
+                available: !!(r && (r.isAvailable || r.biometryType)),
+                type: r && r.biometryType ? r.biometryType : 'unknown',
+                reason: r && r.reason ? r.reason : ''
+              });
+            })
+            .catch(function(){ resolve({available: false, type: 'none'}); });
+        } else {
+          resolve({available: false, type: 'none'});
+        }
+      });
+    },
+
     authenticate: function(reason) {
       return new Promise(function(resolve) {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.BiometricAuth) {
-          window.Capacitor.Plugins.BiometricAuth.verify({
+          window.Capacitor.Plugins.BiometricAuth.authenticate({
             reason: reason || 'Yoklama icin kimlik dogrulamasi',
-            title: 'Dicle Tip Yoklama'
-          }).then(function() { resolve(true); })
-            .catch(function() { resolve(false); });
+            androidTitle: 'Dicle Tip Yoklama',
+            androidSubtitle: 'Biyometrik Dogrulama',
+            androidConfirmationRequired: false,
+            allowDeviceCredential: true,  // parmak izi yoksa PIN/desen de kabul
+            cancelTitle: 'Iptal',
+            fallbackTitle: 'PIN kullan'
+          }).then(function() { resolve({ok: true}); })
+            .catch(function(e) {
+              var reason = (e && e.code) || (e && e.message) || 'iptal';
+              resolve({ok: false, reason: reason});
+            });
         } else {
-          resolve(true); // Desteklenmiyorsa gec
+          resolve({ok: false, reason: 'plugin_not_available'});
         }
       });
     },
